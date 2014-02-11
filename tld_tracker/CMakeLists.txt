@@ -46,6 +46,7 @@ target_link_libraries(main libopentld ${OpenCV_LIBS} cv_bridge)
 
 rosbuild_add_executable(ros_tld_tracker_node src/tld_node.cpp)
 target_link_libraries(ros_tld_tracker_node main)
+rosbuild_add_openmp_flags(ros_tld_tracker_node)
 
 #Target 2 : ros_tld_gui
 rosbuild_add_library(gui_lib ${SRC_FILES})
