@@ -136,12 +136,17 @@ void BaseFrame::image_receivedCB(const sensor_msgs::ImageConstPtr & msg)
 
 		if (enc::isColor(msg->encoding))
 		{
-			image = QImage((const unsigned char*)(cv_ptr->image.data),cv_ptr->image.cols,cv_ptr->image.rows,QImage::Format_RGB888);
+            // Force QImage to do a deep copy of the image data
+			QImage tmpImage = QImage((const unsigned char*)(cv_ptr->image.data),cv_ptr->image.cols,cv_ptr->image.rows,QImage::Format_RGB888);
+			image = QImage(tmpImage);
+			image.detach();
 			//image.rgbSwapped();
 		}
 		else
 		{
-			image = QImage((const unsigned char*)(cv_ptr->image.data),cv_ptr->image.cols,cv_ptr->image.rows,QImage::Format_Indexed8);
+			QImage tmpImage = QImage((const unsigned char*)(cv_ptr->image.data),cv_ptr->image.cols,cv_ptr->image.rows,QImage::Format_Indexed8);
+			image = QImage(tmpImage);
+			image.detach();
 		}
 
 		emit sig_image_received(image);
